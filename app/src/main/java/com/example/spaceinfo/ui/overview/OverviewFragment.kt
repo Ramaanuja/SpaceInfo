@@ -5,12 +5,11 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.spaceinfo.AppState
-import com.example.spaceinfo.ui.overview.overviewRecycler.OverviewAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.example.spaceinfo.ResponseResult
 import com.example.spaceinfo.databinding.FragmentOverviewBinding
-import kotlinx.coroutines.flow.collectLatest
+
 
 
 class OverviewFragment : Fragment() {
@@ -19,12 +18,13 @@ class OverviewFragment : Fragment() {
     private var _binding: FragmentOverviewBinding? = null
 
     private val binding get() = _binding!!
+    var isLoading = false
 
-//    private val viewModel: OverviewViewModel by lazy {
-//        ViewModelProvider(this).get(OverviewViewModel::class.java)
-//    }
+    private val viewModel: OverviewViewModel by lazy {
+        ViewModelProvider(this).get(OverviewViewModel::class.java)
+    }
 
-    private var adapterOver = OverviewAdapter()
+//    private var adapterOver = OverviewAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,17 +34,16 @@ class OverviewFragment : Fragment() {
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
 
         binding.rv.itemAnimator = null
-        //val layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         val layoutManager = GridLayoutManager(context, 3)
-        binding.rv.layoutManager = layoutManager
-        binding.rv.adapter = adapterOver
+//        binding.rv.layoutManager = layoutManager
+//        binding.rv.adapter = adapterOver
+//        binding.rv.addOnScrollListener(scrollListener)
 
-        initViewModel()
+
+
 //        viewModel.liveData().observe(viewLifecycleOwner, {
 //            renderData(it)
 //        })
-
-
 
         return binding.root
     }
@@ -54,44 +53,39 @@ class OverviewFragment : Fragment() {
         Log.d(TAG, "onResume")
     }
 
-    private fun renderData(state: AppState) {
-        when (state) {
-            is AppState.SuccessList -> {
-                Log.d(TAG, "renderData:")
-                //adapterOver.pictures = state.serverResponseData
-            }
-        }
-    }
-
-    private fun initViewModel() {
-        val viewModel = ViewModelProvider(this).get(OverviewViewModel::class.java)
-        lifecycleScope.launchWhenCreated {
-            viewModel.getListPicture().collectLatest {
-                adapterOver.submitData(it)
-            }
-        }
-    }
+//    private fun renderData(state: ResponseResult) {
+//        when (state) {
+//            is ResponseResult.SuccessList -> {
+//                Log.d(TAG, "renderData:")
+//                isLoading = false
+//                adapterOver.addToList(state.serverResponseData)
+//            }
+//        }
+//    }
 
 
-    fun createAdapter() {
-//        val flexboxLayoutManager = FlexboxLayoutManager(context).apply {
-//            flexWrap = FlexWrap.WRAP
-//            flexDirection = FlexDirection.ROW
-//            alignItems = AlignItems.STRETCH
+
+//        var scrollListener = object : RecyclerView.OnScrollListener() {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+////                val totalItemCount = recyclerView.layoutManager?.itemCount
+////                val lastVisibleItem = (recyclerView.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
+////                if (totalItemCount == lastVisibleItem + 1)  {
+////                    Log.d("MyTAG", "Load new list")
+////                        viewModel.getList()
+//                }
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+//                if (!isLoading) {
+//                    if (layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == adapterOver.listOfPicture.size - 1) {
+//                        isLoading = true
+//                        viewModel.getList()
+//                    }
+//                }
+//            }
 //        }
 
-//        var layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
-//        binding.rv.layoutManager = layoutManager
-//        binding.rv.adapter = adapterOver
-
-
-//        binding.rv.apply {
-//            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//            binding.rv.layoutManager = layoutManager
-//            adapter = adapterOver
-//        }
-    }
 
 
     override fun onDestroyView() {

@@ -1,9 +1,7 @@
 package com.example.spaceinfo.datalayer.remotedatasource
 
-import com.example.spaceinfo.datalayer.remotedatasource.dto.Picture
-import com.example.spaceinfo.datalayer.remotedatasource.dto.ResponseData
-import retrofit2.Call
-import retrofit2.Response
+
+import com.example.spaceinfo.datalayer.remotedatasource.dto.PictureFromApi
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,17 +9,19 @@ import retrofit2.http.Query
 interface NasaAPI {
 
     @GET("planetary/apod")
-    fun getPictureOfTheDay(
+    suspend fun getPictureOfTheDay(
         @Query("date") date: String?,
         @Query("api_key") apiKey: String
-    ): Call<ResponseData>
+    ): PictureFromApi
 
-    @GET("planetary/apod")
-    suspend fun getListPicturesOfTheDay(
-        @Query("count") count: Int = 10,
-        @Query("thumbs") thumbs: Boolean = false,
-        @Query("api_key") apiKey: String
-    ): Response<List<Picture>>
+
+
+//    @GET("planetary/apod")
+//    suspend fun getListPicturesOfTheDay(
+//        @Query("count") count: Int = 10,
+//        @Query("thumbs") thumbs: Boolean = false,
+//        @Query("api_key") apiKey: String
+//    ): Response<List<Picture>>
 
 
 

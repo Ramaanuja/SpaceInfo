@@ -1,22 +1,21 @@
-package com.example.spaceinfo.datalayer.repository
-
-import com.example.spaceinfo.datalayer.remotedatasource.RemoteDataSource
-import com.example.spaceinfo.datalayer.remotedatasource.dto.Picture
-import com.example.spaceinfo.datalayer.remotedatasource.dto.ResponseData
-import retrofit2.Callback
-import retrofit2.Response
-
-class RepositoryImpl(
-    private val remoteDataSource: RemoteDataSource,
-) : Repository {
-
-    override fun getPictureOfDay(date: String?, callback: Callback<ResponseData>) {
-        remoteDataSource.getPictureOfDay(date, callback)
-    }
-
-    override suspend fun getListPictures(): Response<List<Picture>> {
-        return remoteDataSource.getListPictures()
-    }
+//package com.example.spaceinfo.datalayer.repository
+//
+//import com.example.spaceinfo.datalayer.remotedatasource.RemoteDataSource
+//import com.example.spaceinfo.domain.PictureRepository
+//import retrofit2.Callback
+//import retrofit2.Response
+//
+//class RepositoryImpl(
+//    private val remoteDataSource: RemoteDataSource,
+//) : PictureRepository {
+//
+//    override fun getPictureOfDay(date: String?, callback: Callback<ResponseData>) {
+//        remoteDataSource.getPictureOfDay(date, callback)
+//    }
+//
+//    override suspend fun getListPictures(): Response<List<Picture>> {
+//        return remoteDataSource.getListPictures()
+//    }
 
 //    override fun getSpaceWeatherInfo(
 //        startDate: String,
@@ -44,4 +43,4 @@ class RepositoryImpl(
 //    }
 
 
-}
+//}

@@ -3,32 +3,22 @@ package com.example.spaceinfo.ui.home
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.api.load
-import com.example.spaceinfo.AppState
-import com.example.spaceinfo.ui.calendar.BottomSheetFragment
+import com.bumptech.glide.Glide
 import com.example.spaceinfo.R
 import com.example.spaceinfo.databinding.FragmentHomeBinding
-import com.example.spaceinfo.ui.home.homeRecycler.HomeAdapter
-import com.example.spaceinfo.ui.overview.OverviewViewModel
-import com.example.spaceinfo.ui.overview.overviewRecycler.OverviewAdapter
-import kotlinx.coroutines.flow.collectLatest
+import com.example.spaceinfo.ui.calendar.BottomSheetFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by lazy {
-        ViewModelProvider(this).get(HomeViewModel::class.java)
-    }
-
-    private var adapterOver = HomeAdapter()
+    private val viewModel: HomeViewModel by viewModels()
+//    private var adapterOver = HomeAdapter()
 
 
     override fun onCreateView(
@@ -38,13 +28,18 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true);
+        viewModel.getStartPicture()
+//        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//        binding.homeRecyclerView.layoutManager = layoutManager
+//        binding.homeRecyclerView.adapter = adapterOver
 
-
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.homeRecyclerView.layoutManager = layoutManager
-        binding.homeRecyclerView.adapter = adapterOver
-
-        viewModel.getList()
+        viewModel.pictureLiveData.observe(viewLifecycleOwner){picture->
+            binding.titleTextView.text = picture.title
+            binding.descriptionTextView.text = picture.explanation
+            Glide.with(requireContext())
+                .load(picture.url)
+                .into(binding.mainImageView)
+        }
 
         return binding.root
     }
@@ -64,40 +59,40 @@ class HomeFragment : Fragment() {
         return false
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel.getData().observe(viewLifecycleOwner, Observer<AppState> { renderData(it) })
-    }
-
-
-
-    private fun renderData(state: AppState) {
-        when (state) {
-            is AppState.Success -> {
-                val serverResponseData = state.serverResponseData
-                val url = serverResponseData.url
-                binding.mainImageView.load(url) {
-                    lifecycle(this@HomeFragment)
-//                    error(R.drawable.ic_no_photo_vector)
-//                    placeholder(R.drawable.ic_no_photo_vector)
-                }
-                binding.titleTextView.text = serverResponseData.title
-                binding.descriptionTextView.text = serverResponseData.explanation
-
-
-            }
-            is AppState.SuccessList -> {
-                adapterOver.seeAlsoList = state.serverResponseData
-            }
-            is AppState.Loading -> {
-                //Отобразите загрузку
-                //showLoading()
-            }
-            is AppState.Error -> {
-
-            }
-        }
-    }
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        viewModel.getData().observe(viewLifecycleOwner, Observer<ResponseResult> { renderData(it) })
+//    }
+//
+//
+//
+//    private fun renderData(state: ResponseResult) {
+//        when (state) {
+//            is ResponseResult.Success -> {
+//                val serverResponseData = state.serverResponseData
+//                val url = serverResponseData.url
+//                binding.mainImageView.load(url) {
+//                    lifecycle(this@HomeFragment)
+////                    error(R.drawable.ic_no_photo_vector)
+////                    placeholder(R.drawable.ic_no_photo_vector)
+//                }
+//                binding.titleTextView.text = serverResponseData.title
+//                binding.descriptionTextView.text = serverResponseData.explanation
+//
+//
+//            }
+//            is ResponseResult.SuccessList -> {
+//                adapterOver.seeAlsoList = state.serverResponseData
+//            }
+//            is ResponseResult.Loading -> {
+//                //Отобразите загрузку
+//                //showLoading()
+//            }
+//            is ResponseResult.Error -> {
+//
+//            }
+//        }
+//    }
 
 
 

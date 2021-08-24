@@ -5,5 +5,4 @@
     android:scaleType="centerCrop"
     android:id="@+id/imagePost"
     android:layout_height="150dp">
-
 </ImageView>
