@@ -24,20 +24,11 @@ class RemoteDataSource @Inject constructor() {
         .build()
         .create(NasaAPI::class.java)
 
-//    fun getPictureOfDay(date: String?, callback: Callback<ResponseData>) {
-//        nasaAPI.getPictureOfTheDay(date, BuildConfig.nasa_api_key).enqueue(callback)
-//    }
+    suspend fun getPictureOfDay(date: String?) =
+        nasaAPI.getPictureOfTheDay(date, apiKey = BuildConfig.nasa_api_key)
 
-    suspend fun getPictureOfDay(date: String?) = nasaAPI.getPictureOfTheDay(date, apiKey = BuildConfig.nasa_api_key)
-
-    //suspend fun getListPictures() = nasaAPI.getListPicturesOfTheDay(apiKey = BuildConfig.nasa_api_key)
-
-//    fun getSpaceWhetherInfo(startDate: String, endDate: String, type: String) =
-//        nasaAPI.getSpaceWeatherInfo(startDate, endDate, type, BuildConfig.nasa_api_key)
-//
-//    fun getMarsPhoto(date: String) = nasaAPI.getMarsPhoto(date, BuildConfig.nasa_api_key)
-//
-//    fun getEarthPhoto(date: String) = nasaAPI.getEarthPhoto(date, BuildConfig.nasa_api_key)
+    suspend fun getListPictures() =
+        nasaAPI.getListPicturesOfTheDay(apiKey = BuildConfig.nasa_api_key)
 
 
     private fun createOkHttpClient(interceptor: Interceptor): OkHttpClient {

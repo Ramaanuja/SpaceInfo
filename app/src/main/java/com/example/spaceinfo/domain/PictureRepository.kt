@@ -7,7 +7,7 @@ interface PictureRepository {
 
     suspend fun getPictureOfDay(date: String? = null): PictureOfDay
 
-//    suspend fun getListPictures(): Response<List<Picture>>
+    suspend fun getListPictures(): List<PictureOfDay>
 
 
 

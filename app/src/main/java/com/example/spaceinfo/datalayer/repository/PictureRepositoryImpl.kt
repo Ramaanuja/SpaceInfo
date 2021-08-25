@@ -21,6 +21,15 @@ class PictureRepositoryImpl @Inject constructor(
         return pictureFromApiConvert(pictureFromApi, isFavorite)
     }
 
+    override suspend fun getListPictures(): List<PictureOfDay> {
+        val listPicturesFromApi = dataSource.getListPictures()
+        val listPicturesOfDay: MutableList<PictureOfDay> = mutableListOf()
+        for (i in listPicturesFromApi) {
+            listPicturesOfDay.add(pictureFromApiConvert(pictureFromApi = i))
+        }
+        return listPicturesOfDay
+    }
+
     fun pictureFromApiConvert(pictureFromApi: PictureFromApi, inFavorite: Boolean): PictureOfDay =
         PictureOfDay(
             date = pictureFromApi.date,
@@ -31,5 +40,17 @@ class PictureRepositoryImpl @Inject constructor(
             title = pictureFromApi.title,
             url = pictureFromApi.url,
             inFavorite = inFavorite
+        )
+
+    fun pictureFromApiConvert(pictureFromApi: PictureFromApi): PictureOfDay =
+        PictureOfDay(
+            date = pictureFromApi.date,
+            explanation = pictureFromApi.explanation,
+            hdurl = pictureFromApi.hdurl,
+            mediaType = pictureFromApi.mediaType,
+            serviceVersion = pictureFromApi.serviceVersion,
+            title = pictureFromApi.title,
+            url = pictureFromApi.url,
+            inFavorite = false
         )
 }

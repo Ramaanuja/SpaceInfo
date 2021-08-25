@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.spaceinfo.R
 import com.example.spaceinfo.databinding.FragmentHomeBinding
 import com.example.spaceinfo.ui.calendar.BottomSheetFragment
+import com.example.spaceinfo.ui.home.homeRecycler.HomeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +19,8 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModels()
-//    private var adapterOver = HomeAdapter()
+    //private var adapterOver = HomeAdapter(viewModel)
+    private var adapterOver = HomeAdapter()
 
 
     override fun onCreateView(
@@ -29,9 +31,9 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true);
         viewModel.getStartPicture()
-//        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        binding.homeRecyclerView.layoutManager = layoutManager
-//        binding.homeRecyclerView.adapter = adapterOver
+        viewModel.getListSeeAlso()
+
+        initRecyclerView()
 
         viewModel.pictureLiveData.observe(viewLifecycleOwner){picture->
             binding.titleTextView.text = picture.title
@@ -39,6 +41,10 @@ class HomeFragment : Fragment() {
             Glide.with(requireContext())
                 .load(picture.url)
                 .into(binding.mainImageView)
+        }
+
+        viewModel.seeAlsoLiveData.observe(viewLifecycleOwner) {list->
+            adapterOver.seeAlsoList = list
         }
 
         return binding.root
@@ -59,40 +65,11 @@ class HomeFragment : Fragment() {
         return false
     }
 
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel.getData().observe(viewLifecycleOwner, Observer<ResponseResult> { renderData(it) })
-//    }
-//
-//
-//
-//    private fun renderData(state: ResponseResult) {
-//        when (state) {
-//            is ResponseResult.Success -> {
-//                val serverResponseData = state.serverResponseData
-//                val url = serverResponseData.url
-//                binding.mainImageView.load(url) {
-//                    lifecycle(this@HomeFragment)
-////                    error(R.drawable.ic_no_photo_vector)
-////                    placeholder(R.drawable.ic_no_photo_vector)
-//                }
-//                binding.titleTextView.text = serverResponseData.title
-//                binding.descriptionTextView.text = serverResponseData.explanation
-//
-//
-//            }
-//            is ResponseResult.SuccessList -> {
-//                adapterOver.seeAlsoList = state.serverResponseData
-//            }
-//            is ResponseResult.Loading -> {
-//                //Отобразите загрузку
-//                //showLoading()
-//            }
-//            is ResponseResult.Error -> {
-//
-//            }
-//        }
-//    }
+    fun initRecyclerView() {
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeRecyclerView.layoutManager = layoutManager
+        binding.homeRecyclerView.adapter = adapterOver
+    }
 
 
 

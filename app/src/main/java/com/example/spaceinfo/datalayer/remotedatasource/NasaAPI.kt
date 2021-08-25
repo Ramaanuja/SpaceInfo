@@ -16,12 +16,12 @@ interface NasaAPI {
 
 
 
-//    @GET("planetary/apod")
-//    suspend fun getListPicturesOfTheDay(
-//        @Query("count") count: Int = 10,
-//        @Query("thumbs") thumbs: Boolean = false,
-//        @Query("api_key") apiKey: String
-//    ): Response<List<Picture>>
+    @GET("planetary/apod")
+    suspend fun getListPicturesOfTheDay(
+        @Query("count") count: Int = 10,
+        @Query("thumbs") thumbs: Boolean = false,
+        @Query("api_key") apiKey: String
+    ): List<PictureFromApi>
 
 
 
