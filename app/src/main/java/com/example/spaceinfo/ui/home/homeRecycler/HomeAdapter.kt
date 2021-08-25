@@ -21,6 +21,7 @@ class HomeAdapter @Inject constructor() : RecyclerView.Adapter<HomeHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeHolder {
         return HomeHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.home_item, parent, false)
+            //LayoutInflater.from(parent.context).inflate(R.layout.home_item, parent, false), viewModel
         )
     }
 
