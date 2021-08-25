@@ -17,10 +17,6 @@ class HomeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(itemView.context)
             .load(picture.url)
             .into(binding.homeItemImageView)
-
-        itemView.setOnClickListener {
-            //viewModel.clickOnSeeAlso(picture)
-        }
     }
 
 }

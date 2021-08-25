@@ -44,7 +44,7 @@ class HomeViewModel @Inject constructor(
 
     fun clickOnSeeAlso(pictureOfDay: PictureOfDay) {
         viewModelScope.launch {
-            _pictureLiveData.value = getPictureOfDayUseCase.invoke(pictureOfDay.date)
+            _pictureLiveData.value = pictureOfDay
         }
 
     }

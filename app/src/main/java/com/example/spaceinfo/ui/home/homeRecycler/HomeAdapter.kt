@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 //class HomeAdapter @Inject constructor(private val viewModel: HomeViewModel) : RecyclerView.Adapter<HomeHolder>() {
-class HomeAdapter @Inject constructor() : RecyclerView.Adapter<HomeHolder>() {
+class HomeAdapter (val viewModel: HomeViewModel) : RecyclerView.Adapter<HomeHolder>() {
 
     var seeAlsoList = listOf<PictureOfDay>()
         set(value) {
@@ -26,7 +26,11 @@ class HomeAdapter @Inject constructor() : RecyclerView.Adapter<HomeHolder>() {
     }
 
     override fun onBindViewHolder(holder: HomeHolder, position: Int) {
-        holder.onBind(seeAlsoList[position])
+        val picture = seeAlsoList[position]
+        holder.onBind(picture)
+        holder.itemView.setOnClickListener {
+            viewModel.clickOnSeeAlso(picture)
+        }
     }
 
     override fun getItemCount(): Int = seeAlsoList.size

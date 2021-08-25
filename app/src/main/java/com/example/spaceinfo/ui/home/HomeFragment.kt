@@ -20,7 +20,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
     //private var adapterOver = HomeAdapter(viewModel)
-    private var adapterOver = HomeAdapter()
+    lateinit var adapterOver: HomeAdapter
 
 
     override fun onCreateView(
@@ -68,6 +68,7 @@ class HomeFragment : Fragment() {
     fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.homeRecyclerView.layoutManager = layoutManager
+        adapterOver = HomeAdapter(viewModel)
         binding.homeRecyclerView.adapter = adapterOver
     }
 
